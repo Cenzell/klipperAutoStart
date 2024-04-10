@@ -12,26 +12,22 @@ public class App {
         
         System.out.println("AutoStart Running...");
         
-        boolean printerConnected = false;
-        boolean klipperOnline = false;
+        String apiCall;
         
         while (true) {
-        
+
+            String temp = getKlipperStatus();
+            System.out.println(temp);
+
             File printerPath = new File("/dev/serial/by-id/usb-Klipper_stm32h723xx_170035001651313238353730-if00");
-
-            String apiCall = getKlipperStatus();
-            if (apiCall != "ready") {
-                connectKlipper();
-            }
-
             if(printerPath.exists()){
-                printerConnected = true;
+                apiCall = getKlipperStatus();
+                //System.out.println(apiCall);
+                if (apiCall != "ready") {
+                    connectKlipper();
+                }
             }
-            
-            if(printerConnected && klipperOnline){
-                connectKlipper();
-            }
-            
+
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
@@ -42,7 +38,7 @@ public class App {
 
     public static String getKlipperStatus() {
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("https://httpbin.org/anything"))
+				.uri(URI.create("https://httpbin.org/anything")) //SET PRINTER URL HERE
 				.method("GET", HttpRequest.BodyPublishers.noBody())
 				.build();
 		HttpResponse<String> response = null;
