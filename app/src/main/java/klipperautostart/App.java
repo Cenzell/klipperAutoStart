@@ -55,5 +55,11 @@ public class App {
 
     public static void connectKlipper(){
         //Restart Klipper Code
+        try {
+            Runtime.getRuntime().exec("sudo ./srartKlipper.sh");
+        } catch (IOException e) {
+            System.out.println("Failed to run start script");
+            //e.printStackTrace();
+        }
     }
 }
